@@ -29,9 +29,7 @@ python_dist/
 *.zip
 *.dll
 
-# Docker
-.dockerignore
-docker-compose.override.yml
+
 
 # Caches
 .cache
