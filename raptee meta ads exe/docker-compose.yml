@@ -1,0 +1,13 @@
+services:
+  meta-ads-scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meta-ads-scraper
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    shm_size: '1gb'
+    restart: unless-stopped

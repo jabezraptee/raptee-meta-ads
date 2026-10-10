@@ -1,0 +1,81 @@
+{
+  "name": "raptee-meta-ads-intelligence",
+  "version": "2.0.0",
+  "description": "Meta Ads Intelligence Platform Desktop App",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "electron .",
+    "prepare-dist": "powershell -ExecutionPolicy Bypass -File ./prepare-dist.ps1",
+    "build": "electron-builder --win"
+  },
+  "keywords": [
+    "meta",
+    "ads",
+    "scraper",
+    "intelligence",
+    "electron"
+  ],
+  "author": "Raptee",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.raptee.metaads",
+    "productName": "Meta Ads Intelligence",
+    "directories": {
+      "output": "dist_app"
+    },
+    "win": {
+      "target": [
+        "zip",
+        "dir"
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "packElevateHelper": false,
+      "differentialPackage": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "files": [
+      "electron-main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "python_dist",
+        "to": "python_dist",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "backend",
+        "to": "app_backend/backend",
+        "filter": [
+          "**/*",
+          "!**/__pycache__/**"
+        ]
+      },
+      {
+        "from": "frontend",
+        "to": "app_backend/frontend",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "main.py",
+        "to": "app_backend/main.py"
+      },
+      {
+        "from": ".env",
+        "to": "app_backend/.env"
+      }
+    ]
+  }
+}

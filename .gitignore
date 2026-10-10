@@ -1,0 +1,48 @@
+# Environments
+.env
+.env.local
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Builds and distributions
+dist/
+dist_app/
+build/
+python_dist/
+*.exe
+*.zip
+*.dll
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Caches
+.cache
+.pytest_cache/
+.mypy_cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raptee.HV | Meta Ads Intelligence & Competitor Creative Spy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+  <!-- Header matching Screenshot 1 -->
+  <header class="app-header">
+    <div class="logo-group">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">
+        <h1>Raptee.HV <span class="logo-badge-hv">INTELLIGENCE</span></h1>
+        <p>High-Voltage Competitor Creative Spy & Performance Analytics</p>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="status-badge" id="scraper-status">
+        <span class="status-dot"></span> Engine Active
+      </div>
+      <div class="status-badge" id="ai-status">
+        <span class="status-dot"></span> Mistral AI (open-mistral-7b)
+      </div>
+      <div class="status-badge workspace-badge" id="workspace-badge" title="Private Session Workspace">
+        <span class="status-dot" style="background:#38bdf8;"></span> <span id="workspace-id-text">Private Workspace</span>
+        <button type="button" id="btn-reset-workspace" class="btn-workspace-reset" title="Start a fresh private workspace">🔄 New</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    <!-- Scraper Control Panel matching Screenshot 1 -->
+    <section class="scraper-panel">
+      <form id="scrape-form" class="scraper-grid">
+        <div class="control-col control-col-grow">
+          <label class="control-label">Target Brand Competitors (Official Meta Ad Library Page ID)</label>
+          <div id="search-bar-container"></div>
+        </div>
+
+        <div class="control-col">
+          <label for="status-select" class="control-label">Ad Status</label>
+          <select id="status-select" class="select-control">
+            <option value="active" selected>Active Only</option>
+            <option value="all">All (Active + Inactive)</option>
+            <option value="inactive">Inactive Only</option>
+          </select>
+        </div>
+
+        <div class="control-col">
+          <label for="country-select" class="control-label">Country</label>
+          <select id="country-select" class="select-control">
+            <option value="IN" selected>IN (India)</option>
+            <option value="ALL">ALL (Worldwide)</option>
+            <option value="US">US (United States)</option>
+            <option value="GB">GB (United Kingdom)</option>
+            <option value="DE">DE (Germany)</option>
+            <option value="FR">FR (France)</option>
+            <option value="AE">AE (United Arab Emirates)</option>
+          </select>
+        </div>
+
+        <div class="control-col control-col-sm">
+          <label for="max-ads-input" class="control-label">Max Ads</label>
+          <input type="number" id="max-ads-input" class="input-control" value="30" min="5" max="300" step="5" />
+        </div>
+
+        <div class="control-col control-col-btn">
+          <label class="control-label">&nbsp;</label>
+          <button type="submit" id="submit-btn" class="btn-scrape">
+            <span id="btn-spinner" style="display: none; animation: spin 1s linear infinite;">⏳</span>
+            <span id="btn-text">Start Scraper</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Navigation Tab Bar matching Screenshot 1 -->
+    <nav class="tabs-bar">
+      <button type="button" class="tab-btn active" data-tab="gallery">
+        <span class="tab-icon">🖼️</span> Ads Gallery (<span id="gallery-count">0</span>)
+      </button>
+      <button type="button" class="tab-btn" data-tab="comparison">
+        <span class="tab-icon">📊</span> Competitor Comparison
+      </button>
+      <button type="button" class="tab-btn" data-tab="velocity">
+        <span class="tab-icon">📈</span> Velocity Timeline
+      </button>
+      <button type="button" class="tab-btn" data-tab="gaps">
+        <span class="tab-icon">🎯</span> Market Gaps
+      </button>
+    </nav>
+
+    <!-- Secondary Intelligence & Filter Toolbar matching Screenshot 1 -->
+    <section class="secondary-toolbar">
+      <div class="toolbar-left">
+        <button type="button" id="btn-dossier" class="btn-dossier">
+          📄 Executive Dossier
+        </button>
+        <button type="button" id="btn-strategy" class="btn-strategy">
+          ✨ AI Strategy Report
+        </button>
+      </div>
+
+      <div class="toolbar-center">
+        <select id="sort-select" class="select-control select-sort">
+          <option value="longevity" selected>Sort: Top Winning (Longevity) ⌵</option>
+          <option value="newest">Sort: Newest First</option>
+          <option value="copies">Sort: Most Copies Running</option>
+          <option value="oldest">Sort: Oldest First</option>
+        </select>
+
+        <input 
+          type="text" 
+          id="filter-input" 
+          class="input-control input-filter" 
+          placeholder="Filter text or brand..." 
+        />
+      </div>
+
+
+    </section>
+
+    <!-- TAB 1: Ads Gallery -->
+    <div id="tab-gallery" class="tab-content active">
+      <div id="scrape-status-banner" class="scrape-status-banner" style="display: none;"></div>
+
+      <div id="ads-grid" class="ads-grid"></div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">🎯</div>
+        <h3 id="empty-state-title">No Competitor Ads Loaded</h3>
+        <p id="empty-state-subtitle">Type your competitor brand names above and click <strong>Start Scraper</strong> to fetch live creatives.</p>
+        <div id="empty-state-logs" class="empty-state-logs" style="display: none;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Competitor Comparison -->
+    <div id="tab-comparison" class="tab-content">
+      <div id="comparison-container" class="analytics-card"></div>
+    </div>
+
+    <!-- TAB 3: Velocity Timeline -->
+    <div id="tab-velocity" class="tab-content">
+      <div id="velocity-container" class="analytics-card"></div>
+    </div>
+
+    <!-- TAB 4: Market Gaps -->
+    <div id="tab-gaps" class="tab-content">
+      <div id="gaps-container" class="analytics-card"></div>
+    </div>
+  </main>
+
+  <!-- Floating Ask AI Copilot Button -->
+  <button type="button" id="btn-floating-copilot" class="floating-copilot-btn" aria-label="Open AI Copilot Chat">
+    <span class="copilot-dot">●</span> 💬 Ask AI Copilot
+  </button>
+
+  <!-- Full Floating Chatbot Widget -->
+  <div id="copilot-chat-widget" class="chat-widget" style="display: none;">
+    <div class="chat-widget-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar">🎯</div>
+        <div class="chat-header-text">
+          <div class="chat-title">Meta Ads AI Copilot</div>
+          <div class="chat-subtitle" id="chat-subtitle">Performance Marketing Expert</div>
+        </div>
+      </div>
+      <div class="chat-header-actions">
+        <button type="button" class="btn-chat-action" id="btn-clear-chat" title="Clear Chat History">🗑️</button>
+        <button type="button" class="btn-chat-action" id="btn-close-chat" title="Minimize Chat">&times;</button>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <!-- Chat bubbles injected by JavaScript -->
+    </div>
+
+    <form class="chat-input-area" id="chat-form">
+      <input 
+        type="text" 
+        id="chat-input" 
+        class="chat-input-field" 
+        placeholder="Ask anything on how to improve or beat these ads..." 
+        autocomplete="off" 
+      />
+      <button type="submit" id="chat-send-btn" class="chat-send-btn" title="Send message">
+        <span>➤</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Dedicated Beat This Ad Modal -->
+  <div id="beat-ad-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">🥊</span>
+          <div>
+            <h3>Counter-Ad Studio</h3>
+            <p>Reverse-Engineering Winning Competitor Creative</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-beat-ad">&times;</button>
+      </div>
+      <div class="modal-body" id="beat-ad-body"></div>
+    </div>
+  </div>
+
+  <!-- Executive Dossier Modal -->
+  <div id="dossier-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">📄</span>
+          <div>
+            <h3>Executive Competitor Intelligence Dossier</h3>
+            <p>Comprehensive creative & positioning breakdown</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-dossier">&times;</button>
+      </div>
+      <div class="modal-body" id="dossier-body"></div>
+    </div>
+  </div>
+
+  <!-- AI Strategy Report Modal -->
+  <div id="strategy-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">✨</span>
+          <div>
+            <h3>AI Strategic Offensive Playbook</h3>
+            <p>Tactical battlecard to outperform competitor campaigns</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-strategy">&times;</button>
+      </div>
+      <div class="modal-body" id="strategy-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
